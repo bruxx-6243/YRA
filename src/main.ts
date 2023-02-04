@@ -40,6 +40,8 @@ const fetchData = (app: HTMLDivElement) => {
 
   inputEl.addEventListener("input", (e: Event) => {
     const target = e.target as HTMLInputElement;
+    
+
     if (target.value.length < 4) {
       p.innerText = "*Your name nust be at least 4 characters";
       inputEl.style.borderColor = "rgb(170, 10, 10)";
@@ -47,7 +49,7 @@ const fetchData = (app: HTMLDivElement) => {
       p.innerText = "";
       inputEl.style.borderColor = "rgb(105, 105, 196)";
 
-      name = target.value;
+      name = target.value !== undefined ? target.value : "";
     }
   });
 
