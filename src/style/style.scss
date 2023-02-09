@@ -31,7 +31,7 @@ body {
 }
 
 .header {
-  margin-top: 6rem;
+  margin-top: 7rem;
 }
 
 .title {
@@ -51,7 +51,7 @@ form {
 
   input[type="text"] {
     width: 100%;
-    padding: 0.7rem;
+    padding: $padding;
     text-align: center;
     font-size: 1rem;
     background-color: #333;
@@ -81,7 +81,7 @@ form {
 
   .submit-btn {
     width: 100%;
-    padding: 0.7rem;
+    padding: $padding;
 
     font-size: 1rem;
     letter-spacing: 2px;

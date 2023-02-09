@@ -31,25 +31,29 @@ const fetchData = (app: HTMLDivElement) => {
   const message = document.querySelector(".display__data") as HTMLDivElement;
 
   inputEl.addEventListener("keypress", (e: KeyboardEvent) => {
-    console.log();
     if (e.code === "Space") {
       e.preventDefault();
       p.innerText = "*Sorry you can't use space";
+      return;
     }
   });
 
   inputEl.addEventListener("input", (e: Event) => {
     const target = e.target as HTMLInputElement;
-    
 
-    if (target.value.length < 4) {
+    if (target.value === "") {
+      p.innerText = "*Please type something";
+      inputEl.style.borderColor = "rgb(170, 10, 10)";
+      return;
+    } else if (target.value.length < 4) {
       p.innerText = "*Your name nust be at least 4 characters";
       inputEl.style.borderColor = "rgb(170, 10, 10)";
+      return;
     } else {
       p.innerText = "";
       inputEl.style.borderColor = "rgb(105, 105, 196)";
 
-      name = target.value !== undefined ? target.value : "";
+      return (name = target.value !== undefined ? target.value : "");
     }
   });
 
@@ -77,9 +81,11 @@ const fetchData = (app: HTMLDivElement) => {
           };
 
           if (age === null) {
-            message.innerText = `Sorry I can't find your age 😢`;
+            message.innerText = `Sorry I can't find your age ${name} 😢`;
+            document.title = `Age not founded 😢`;
           } else {
             message.innerHTML = `Hey <span class="name">${name}</span> <br /> you're ${age} years old and you were born is ${year} <br /> <span class="year">${avatar()}</span>`;
+            document.title = `Your Real Age ${name} 🎉`;
           }
         } catch (err) {
           console.log(err);
