@@ -6,6 +6,7 @@ const app = document.getElementById("app") as HTMLDivElement;
   header.classList.add("header");
 
   header.innerHTML = `
+
     <h1 class="title">#YRA</h1>
     <p class="desc">Tell me your name and I'll reveal your real age.</p>
     `;
