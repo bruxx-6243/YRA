@@ -86,7 +86,7 @@ const fetchData = (app: HTMLDivElement) => {
             document.title = `Age not founded 😢`;
           } else {
             message.innerHTML = `Hey <span class="name">${name}</span> <br /> you're ${age} years old and you were born is ${year} <br /> <span class="year">${avatar()}</span>`;
-            document.title = `Your Real Age ${name} 🎉`;
+            document.title = `🎉🎉 Your Real Age ${name}`;
           }
         } catch (err) {
           console.log(err);
