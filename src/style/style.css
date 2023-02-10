@@ -62,9 +62,6 @@ form input[type=text]:is(:focus) {
 form input[type=text]::-moz-placeholder {
   color: rgba(255, 255, 255, 0.548);
 }
-form input[type=text]:-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.548);
-}
 form input[type=text]::placeholder {
   color: rgba(255, 255, 255, 0.548);
 }
