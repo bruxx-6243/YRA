@@ -15,7 +15,7 @@ body {
   font-family: "Poppins", sans-serif;
   text-align: center;
   background-color: hsl(0deg, 0%, 13%);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 #app {
