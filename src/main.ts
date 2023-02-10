@@ -47,7 +47,7 @@ const fetchData = (app: HTMLDivElement) => {
       inputEl.style.borderColor = "rgb(170, 10, 10)";
       return;
     } else if (target.value.length < 3) {
-      p.innerText = "*Your name nust be at least 4 characters";
+      p.innerText = "*Your name nust be at least 3 characters";
       inputEl.style.borderColor = "rgb(170, 10, 10)";
       return;
     } else {
