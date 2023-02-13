@@ -1,0 +1,21 @@
+{
+    "name": "Your Real Age",
+    "short_name": "#YRA",
+    "start_url": "/",
+    "author": "Fariol Blondeau - BRUXX DEV",
+    "icons": [
+        {
+            "src": "/favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#6969c4",
+    "background_color": "#6969c4",
+    "display": "standalone"
+}

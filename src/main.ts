@@ -30,6 +30,7 @@ const fetchData = (app: HTMLDivElement) => {
   const p = document.querySelector(".error") as HTMLParagraphElement;
   const inputEl = document.querySelector("input") as HTMLInputElement;
   const message = document.querySelector(".display__data") as HTMLDivElement;
+  const SubmitBtn = document.querySelector(".submit-btn") as HTMLButtonElement;
 
   inputEl.addEventListener("keypress", (e: KeyboardEvent) => {
     if (e.code === "Space") {
@@ -44,15 +45,17 @@ const fetchData = (app: HTMLDivElement) => {
 
     if (target.value === "") {
       p.innerText = "*Please type something";
-      inputEl.style.borderColor = "rgb(170, 10, 10)";
       return;
     } else if (target.value.length < 3) {
       p.innerText = "*Your name nust be at least 3 characters";
       inputEl.style.borderColor = "rgb(170, 10, 10)";
+      SubmitBtn.setAttribute("disabled", "true");
+
       return;
     } else {
       p.innerText = "";
       inputEl.style.borderColor = "rgb(105, 105, 196)";
+      SubmitBtn.removeAttribute("disabled");
 
       return (name = target.value !== undefined ? target.value : "");
     }
