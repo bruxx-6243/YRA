@@ -49,12 +49,14 @@ const fetchData = (app: HTMLDivElement) => {
     } else if (target.value.length < 3) {
       p.innerText = "*Your name nust be at least 3 characters";
       inputEl.style.borderColor = "rgb(170, 10, 10)";
+      inputEl.style.color = "rgb(170, 10, 10)";
       SubmitBtn.setAttribute("disabled", "true");
 
       return;
     } else {
       p.innerText = "";
       inputEl.style.borderColor = "rgb(105, 105, 196)";
+      inputEl.style.color = "rgb(105, 105, 196)";
       SubmitBtn.removeAttribute("disabled");
 
       return (name = target.value !== undefined ? target.value : "");
@@ -89,7 +91,7 @@ const fetchData = (app: HTMLDivElement) => {
             document.title = `Age not founded 😢`;
           } else {
             message.innerHTML = `Hey <span class="name">${name}</span> <br /> you're ${age} years old and you were born is ${year} <br /> <span class="year">${avatar()}</span>`;
-            document.title = `🎉 ${name} | ${age}`;
+            document.title = ` ${name} | 🎉 ${age}`;
           }
         } catch (err) {
           console.log(err);
