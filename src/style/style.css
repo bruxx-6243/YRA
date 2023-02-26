@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&family=Solitreo&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
 *,
 ::before,
 ::after {
@@ -24,20 +24,30 @@ body {
   margin: 0 1.5rem;
 }
 
-.header {
+.container {
   margin-top: 7rem;
 }
 
-.title {
-  position: relative;
-  font-size: 4rem;
-  font-family: "Solitreo", cursive;
-  color: hsl(0deg, 0%, 100%);
+.title span {
+  border: 2px solid white;
+  padding: 1rem;
+}
+.title span:first-child {
+  background: rgba(223, 48, 170, 0.18);
+  color: rgb(223, 48, 170);
+}
+.title span:nth-child(even) {
+  background: rgba(105, 105, 196, 0.18);
+  color: rgb(105, 105, 196);
+}
+.title span:last-child {
+  background: rgba(236, 168, 41, 0.18);
+  color: rgb(236, 168, 41);
 }
 
 .desc {
   font-size: 1rem;
-  margin: 0.5rem 0 1.5rem;
+  margin: 2rem 0 1rem;
   color: hsl(0deg, 0%, 100%);
 }
 
@@ -95,7 +105,7 @@ form .submit-btn {
 .display__data .name {
   font-size: 2rem;
   font-family: "Solitreo", cursive;
-  font-weight: 900;
+  font-weight: 500;
   color: rgb(105, 105, 196);
 }
 .display__data .year {
