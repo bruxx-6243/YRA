@@ -12,20 +12,16 @@ body {
   height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   font-family: "Poppins", sans-serif;
   text-align: center;
   background-color: hsl(0deg, 0%, 13%);
-  overflow: hidden;
 }
 
 #app {
   max-width: 300px;
   width: 100%;
-  margin: 0 1.5rem;
-}
-
-.container {
-  margin-top: 7rem;
+  margin: 1.5rem;
 }
 
 .title span {

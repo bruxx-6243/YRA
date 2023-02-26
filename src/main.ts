@@ -89,7 +89,7 @@ const fetchData = () => {
             case age > 24 && age <= 64:
               avatar = "🧓🏽";
               break;
-            case age > 65:
+            case age > 64:
               avatar = "👴🏼";
               break;
             default:
