@@ -96,6 +96,9 @@ form .submit-btn {
   border: none;
   cursor: pointer;
 }
+form .submit-btn:disabled, form .submit-btn[disabled] {
+  opacity: 0.7;
+}
 
 .display__data {
   margin-top: 1.5rem;
