@@ -1,4 +1,5 @@
-import "./style/style.css";
+import "./style/style.scss";
+import preloaderIcon from "./preloader.gif";
 
 // The main app
 ((app) => {
@@ -25,19 +26,63 @@ import "./style/style.css";
   app?.append(container);
 })(document.getElementById("app") as HTMLDivElement);
 
+// DOM Elements
+const errorMsg = document.querySelector<HTMLParagraphElement>(".error");
+const nameInput = document.querySelector<HTMLInputElement>("input");
+const message = document.querySelector<HTMLDivElement>(".display__data");
+const SubmitBtn = document.querySelector<HTMLButtonElement>(".submit-btn");
 
+let name: string;
+let avatar: string;
+let year: number;
+
+const preloder = () => {
+  if (message) {
+    message.innerHTML = `
+      <img src=${preloaderIcon} alt="preloader icon" width="120" height="120"/>
+      <h2 class="preloader">Loading...</h2>
+    `;
+  }
+};
+
+const getAndDisplayData = async () => {
+  try {
+    const response = await fetch(`https://api.agify.io/?name=${name}`);
+    const { age } = await response.json();
+    year = Math.floor(new Date().getFullYear() - age);
+
+    switch (true) {
+      case age <= 14:
+        avatar = "👶🏼";
+        break;
+      case age > 14 && age <= 24:
+        avatar = "🧒🏽";
+        break;
+      case age > 24 && age <= 64:
+        avatar = "🧓🏽";
+        break;
+      case age > 64:
+        avatar = "👴🏼";
+        break;
+      default:
+    }
+
+    if (message) {
+      if (age === null) {
+        message.innerText = `Sorry I can't find your age ${name} 😢`;
+        document.title = `Age not founded 😢`;
+      } else {
+        message.innerHTML = `Hey <span class="name"> ${name}</span> <br /> you're ${age} years old and you were born in ${year} <br /> <span class="year">${avatar}</span>`;
+        document.title = ` ${name} | 🎉 ${age}`;
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 // The main function
-const fetchData = () => {
-  const errorMsg = document.querySelector<HTMLParagraphElement>(".error");
-  const nameInput = document.querySelector<HTMLInputElement>("input");
-  const message = document.querySelector<HTMLDivElement>(".display__data");
-  const SubmitBtn = document.querySelector<HTMLButtonElement>(".submit-btn");
-
-  let name: string;
-  let avatar: string;
-  let year: number;
-
+const handlerData = () => {
   if (nameInput && errorMsg && SubmitBtn) {
     nameInput.addEventListener("keypress", (e: KeyboardEvent) => {
       if (e.code === "Space") {
@@ -54,13 +99,11 @@ const fetchData = () => {
         errorMsg.innerText = "*Please type something";
       } else if (target.value.length < 3) {
         errorMsg.innerText = "*Your name nust be at least 3 characters";
-        nameInput.style.borderColor = "rgb(170, 10, 10)";
-        nameInput.style.color = "rgb(170, 10, 10)";
+        nameInput.classList.add("is__notCorrect");
         SubmitBtn.setAttribute("disabled", "true");
       } else {
         errorMsg.innerText = "";
-        nameInput.style.borderColor = "rgb(105, 105, 196)";
-        nameInput.style.color = "rgb(255, 255, 255)";
+        nameInput.classList.remove("is__notCorrect");
         SubmitBtn.removeAttribute("disabled");
 
         name = target.value;
@@ -73,43 +116,12 @@ const fetchData = () => {
     ?.addEventListener("submit", (e: Event) => {
       e.preventDefault();
 
-      (async () => {
-        try {
-          const response = await fetch(`https://api.agify.io/?name=${name}`);
-          const { age } = await response.json();
-          year = Math.floor(new Date().getFullYear() - age);
+      preloder();
 
-          switch (true) {
-            case age <= 14:
-              avatar = "👶🏼";
-              break;
-            case age > 14 && age <= 24:
-              avatar = "🧒🏽";
-              break;
-            case age > 24 && age <= 64:
-              avatar = "🧓🏽";
-              break;
-            case age > 64:
-              avatar = "👴🏼";
-              break;
-            default:
-              avatar = "";
-          }
-
-          if (message) {
-            if (age === null) {
-              message.innerText = `Sorry I can't find your age ${name} 😢`;
-              document.title = `Age not founded 😢`;
-            } else {
-              message.innerHTML = `Hey <span class="name"> ${name}</span> <br /> you're ${age} years old and you were born in ${year} <br /> <span class="year">${avatar}</span>`;
-              document.title = ` ${name} | 🎉 ${age}`;
-            }
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      })();
+      setTimeout(() => {
+        getAndDisplayData();
+      }, 2500);
     });
 };
 
-fetchData();
+handlerData();

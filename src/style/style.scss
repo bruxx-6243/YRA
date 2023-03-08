@@ -30,21 +30,23 @@ body {
 }
 
 .title {
-  span{
+  white-space: nowrap;
+
+  span {
     border: 2px solid white;
     padding: 1rem;
   }
 
-  span:first-child{
-    background: rgba(223, 48, 170, .18);
+  span:first-child {
+    background: rgba(223, 48, 170, 0.18);
     color: rgb(223, 48, 170);
   }
-  span:nth-child(even){
-    background: rgba(105, 105, 196, .18);
-    color:rgb(105, 105, 196);
+  span:nth-child(even) {
+    background: rgba(105, 105, 196, 0.18);
+    color: rgb(105, 105, 196);
   }
-  span:last-child{
-    background: rgba(236, 168, 41, .18);
+  span:last-child {
+    background: rgba(236, 168, 41, 0.18);
     color: rgb(236, 168, 41);
   }
 }
@@ -60,15 +62,24 @@ form {
 
   input[type="text"] {
     width: 100%;
-    padding: $padding;
     text-align: center;
     font-size: 1.1rem;
-    background-color: #333;
     color: #fff;
-    margin-bottom: 0.7rem;
 
-    border: 2px solid rgb(105, 105, 196);
+    margin-bottom: 0.7rem;
+    padding: $padding;
+
+    border: 2px solid transparent;
     border-radius: 7px;
+    background: linear-gradient(#333, #333) padding-box,
+      linear-gradient(
+          -120deg,
+          rgb(105, 105, 196),
+          rgb(223, 48, 170),
+          rgb(236, 168, 41)
+        )
+        border-box;
+
     outline: none;
 
     &:is(:focus) {
@@ -76,6 +87,12 @@ form {
     }
     &::placeholder {
       color: rgba(255, 255, 255, 0.548);
+    }
+
+    &.is__notCorrect {
+      background: linear-gradient(#333, #333) padding-box,
+        linear-gradient(rgb(170, 10, 10), rgb(170, 10, 10)) border-box;
+      color: rgb(170, 10, 10);
     }
   }
 
@@ -112,8 +129,8 @@ form {
     cursor: pointer;
 
     &:disabled,
-    &[disabled]{
-      opacity: .7;
+    &[disabled] {
+      opacity: 0.7;
     }
   }
 }
@@ -123,11 +140,30 @@ form {
   font-size: 1.2rem;
   color: $color;
 
-  .name {
+  .name,
+  .preloader {
     font-size: 2rem;
     font-family: $solitreo;
     font-weight: 500;
     color: rgb(105, 105, 196);
+  }
+
+  .preloader {
+    animation: fading 2s ease-out infinite;
+  }
+
+  @keyframes fading {
+    0% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.2;
+    }
+
+    100% {
+      opacity: 1;
+    }
   }
 
   .year {
