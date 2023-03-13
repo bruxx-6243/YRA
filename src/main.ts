@@ -27,14 +27,12 @@ import preloaderIcon from "./preloader.gif";
 })(document.getElementById("app") as HTMLDivElement);
 
 // DOM Elements
-const errorMsg = document.querySelector<HTMLParagraphElement>(".error");
-const nameInput = document.querySelector<HTMLInputElement>("input");
-const message = document.querySelector<HTMLDivElement>(".display__data");
-const SubmitBtn = document.querySelector<HTMLButtonElement>(".submit-btn");
+const errorMsg = document.querySelector<HTMLParagraphElement>(".error"),
+  nameInput = document.querySelector<HTMLInputElement>("input"),
+  message = document.querySelector<HTMLDivElement>(".display__data"),
+  SubmitBtn = document.querySelector<HTMLButtonElement>(".submit-btn");
 
-let name: string;
-let avatar: string;
-let year: number;
+let name: string, avatar: string, year: number;
 
 const preloder = () => {
   if (message) {
@@ -94,6 +92,9 @@ const handlerData = () => {
 
     nameInput.addEventListener("input", (e: Event) => {
       const target = e.target as HTMLInputElement;
+      const nameRegExp = /^[A-Za-z]+$/;
+
+      // if(!target.value.match(nameRegExp))
 
       if (target.value === "") {
         errorMsg.innerText = "*Please type something";
@@ -101,6 +102,8 @@ const handlerData = () => {
         errorMsg.innerText = "*Your name nust be at least 3 characters";
         nameInput.classList.add("is__notCorrect");
         SubmitBtn.setAttribute("disabled", "true");
+      }else if(!target.value.match(nameRegExp)){
+        errorMsg.innerText = "*You can use only latin characters";
       } else {
         errorMsg.innerText = "";
         nameInput.classList.remove("is__notCorrect");
