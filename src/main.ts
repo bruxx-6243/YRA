@@ -94,8 +94,6 @@ const handlerData = () => {
       const target = e.target as HTMLInputElement;
       const nameRegExp = /^[A-Za-z]+$/;
 
-      // if(!target.value.match(nameRegExp))
-
       if (target.value === "") {
         errorMsg.innerText = "*Please type something";
       } else if (target.value.length < 3) {
