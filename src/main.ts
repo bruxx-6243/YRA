@@ -92,23 +92,31 @@ const handlerData = () => {
 
     nameInput.addEventListener("input", (e: Event) => {
       const target = e.target as HTMLInputElement;
-      const nameRegExp = /^[A-Za-z]+$/;
+      const nameRegExp = new RegExp(/^[A-Za-z]+$/, "g");
 
-      if (target.value === "") {
+      if (!target.value) {
         errorMsg.innerText = "*Please type something";
-      } else if (target.value.length < 3) {
+        SubmitBtn.setAttribute("disabled", "true");
+        return;
+      }
+
+      if (target.value.length < 3) {
         errorMsg.innerText = "*Your name nust be at least 3 characters";
         nameInput.classList.add("is__notCorrect");
         SubmitBtn.setAttribute("disabled", "true");
-      }else if(!target.value.match(nameRegExp)){
-        errorMsg.innerText = "*You can use only latin characters";
-      } else {
-        errorMsg.innerText = "";
-        nameInput.classList.remove("is__notCorrect");
-        SubmitBtn.removeAttribute("disabled");
-
-        name = target.value;
+        return;
       }
+
+      if (!target.value.match(nameRegExp)) {
+        errorMsg.innerText = "*You can use only latin characters";
+        return;
+      }
+
+      errorMsg.innerText = "";
+      nameInput.classList.remove("is__notCorrect");
+      SubmitBtn.removeAttribute("disabled");
+
+      name = target.value;
     });
   }
 
