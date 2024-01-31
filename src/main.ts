@@ -1,7 +1,7 @@
 import "./style/style.scss";
 import preloaderIcon from "./preloader.gif";
 
-// The main app
+// Creation of the DOM
 ((app) => {
   const container = document.createElement("div");
   container.classList.add("container");
@@ -26,111 +26,91 @@ import preloaderIcon from "./preloader.gif";
   app?.append(container);
 })(document.getElementById("app") as HTMLDivElement);
 
-// DOM Elements
-const errorMsg = document.querySelector<HTMLParagraphElement>(".error"),
-  nameInput = document.querySelector<HTMLInputElement>("input"),
-  message = document.querySelector<HTMLDivElement>(".display__data"),
-  SubmitBtn = document.querySelector<HTMLButtonElement>(".submit-btn");
+const waitFunc = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
-let name: string, avatar: string, year: number;
-
-const preloder = () => {
-  if (message) {
-    message.innerHTML = `
+const loader = (element: HTMLDivElement) => {
+  return (element.innerHTML = `
       <img src=${preloaderIcon} alt="preloader icon" width="120" height="120"/>
       <h2 class="preloader">Loading...</h2>
-    `;
-  }
+    `);
 };
 
-const getAndDisplayData = async () => {
+async function getUserData(name: string) {
   try {
     const response = await fetch(`https://api.agify.io/?name=${name}`);
-    const { age } = await response.json();
-    year = Math.floor(new Date().getFullYear() - age);
 
-    switch (true) {
-      case age <= 14:
-        avatar = "👶🏼";
-        break;
-      case age > 14 && age <= 24:
-        avatar = "🧒🏽";
-        break;
-      case age > 24 && age <= 64:
-        avatar = "🧓🏽";
-        break;
-      case age > 64:
-        avatar = "👴🏼";
-        break;
-      default:
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
     }
 
-    if (message) {
-      if (age === null) {
-        message.innerText = `Sorry I can't find your age ${name} 😢`;
-        document.title = `Age not founded 😢`;
-      } else {
-        message.innerHTML = `Hey <span class="name"> ${name}</span> <br /> you're ${age} years old and you were born in ${year} <br /> <span class="year">${avatar}</span>`;
-        document.title = ` ${name} | 🎉 ${age}`;
-      }
-    }
-  } catch (err) {
-    console.error(err);
+    const { age: userAge } = await response.json();
+
+    return userAge;
+
+    // TODO: Remove the type any by specifying the correct type
+  } catch (e: any) {
+    console.error(`Soemthing went wrong: ${e.message}`);
   }
-};
+}
 
-// The main function
-const handlerData = () => {
-  if (nameInput && errorMsg && SubmitBtn) {
-    nameInput.addEventListener("keypress", (e: KeyboardEvent) => {
-      if (e.code === "Space") {
-        e.preventDefault();
-        errorMsg.innerText = "*Sorry you can't use space";
-        return;
-      }
-    });
+function createAvatar(age: number) {
+  let avatar;
 
-    nameInput.addEventListener("input", (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      const nameRegExp = new RegExp(/^[A-Za-z]+$/, "g");
-
-      if (!target.value) {
-        errorMsg.innerText = "*Please type something";
-        SubmitBtn.setAttribute("disabled", "true");
-        return;
-      }
-
-      if (target.value.length < 3) {
-        errorMsg.innerText = "*Your name nust be at least 3 characters";
-        nameInput.classList.add("is__notCorrect");
-        SubmitBtn.setAttribute("disabled", "true");
-        return;
-      }
-
-      if (!target.value.match(nameRegExp)) {
-        errorMsg.innerText = "*You can use only latin characters";
-        return;
-      }
-
-      errorMsg.innerText = "";
-      nameInput.classList.remove("is__notCorrect");
-      SubmitBtn.removeAttribute("disabled");
-
-      name = target.value;
-    });
+  switch (true) {
+    case age > 14 && age <= 24:
+      avatar = "🧒🏽";
+      break;
+    case age > 24 && age <= 64:
+      avatar = "🧓🏽";
+      break;
+    case age > 64:
+      avatar = "👴🏼";
+      break;
+    default:
+      avatar = "👶🏼";
   }
 
-  document
-    .querySelector<HTMLFormElement>("form")
-    ?.addEventListener("submit", (e: Event) => {
-      e.preventDefault();
+  return avatar;
+}
 
-      preloder();
+async function displayMessage(
+  element: HTMLDivElement,
+  userName: string,
+  userAge: number
+) {
+  const age = await getUserData(userName);
+  const avatar = createAvatar(userAge);
 
-      setTimeout(() => {
-        getAndDisplayData();
-      }, 2500);
-    });
-};
+  const year = Math.floor(new Date().getFullYear() - age);
 
-handlerData();
+  if (age === null || year === undefined) {
+    element.innerText = `Sorry I can't find your age ${userName} 😢`;
+    document.title = `Age not founded 😢`;
+  } else {
+    element.innerHTML = `Hey <span class="name"> ${userName}</span> <br /> you're ${age} years old and you were born in ${year} <br /> <span class="year">${avatar}</span>`;
+    document.title = ` ${userName} | 🎉 ${age}`;
+  }
+}
+
+const form = document.querySelector<HTMLFormElement>("form")!;
+
+async function handleSubmit(event: any) {
+  event.preventDefault();
+
+  const element = document.querySelector<HTMLDivElement>(".display__data")!;
+  let userName = event.target[0]?.value;
+
+  if (!userName) {
+    return;
+  }
+
+  const userAge = await getUserData(userName.toLowerCase());
+
+  loader(element);
+  await waitFunc(2500);
+  displayMessage(element, userName, userAge);
+  form.reset();
+}
+
+form.addEventListener("submit", (event) => handleSubmit(event));
